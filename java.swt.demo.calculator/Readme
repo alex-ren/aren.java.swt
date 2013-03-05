@@ -1,2 +1,37 @@
-The project demonstrates how to use ATS with Java program via JNI.
+-- The project demonstrates how to use ATS with Java program via JNI.
+
+-- Set dependency for project java.swt.demo.calculator.
+  Java Build Path -> Projects
+  Add project org.eclipse.swt
+
+-- To build the dynamic library, one must import environment for ATS and then start Eclipse.
+
+-- Add support for javah
+  External Tools Configurations...
+    Location:
+      /usr/bin/javah
+    
+    Working Directory:
+      ${project_loc}/src/atscode
+    
+    Arguments:
+      -classpath ${project_classpath} -v -d ${project_loc}/src/atscode ${java_type_name}
+      
+-- Add support for make_all
+  External Tools Configurations...
+    Location:
+      /usr/bin/make
+    
+    Working Directory:
+      ${project_loc}/src/atscode
+    
+    Arguments:
+      -f Makefile all
+
+-- To build the project.
+  Use external tool
+    javah
+    make_all
+  Then run CalculatorGui.java
+
 
