@@ -103,7 +103,7 @@ define make-jni_lib
   sources  += $2
 
   $1: $(call source-to-object,$2)
-	$(CC) -shared -o $$@ $$(filter %.o,$$^)
+	$(ATSCC) -fPIC -shared -o $$@ $$(filter %.o,$$^)
 # todo add extra option (e.g. linking option) if necessary
 endef
 

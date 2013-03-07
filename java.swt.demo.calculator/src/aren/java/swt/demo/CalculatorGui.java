@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.*;
 
 public class CalculatorGui {
 	static final int mc_width = 55;
-	static final int mc_height = 25; 
+	static final int mc_height = 25;
 	static final int mc_margin = 10;
 	static final int mc_int = 5;
 
@@ -176,11 +176,14 @@ public class CalculatorGui {
 				} else if (m_str.equals("/")) {
 					m_input += " / ";
 				} else if (m_str.equals("=")) {
-					Calculator calc = new Calculator();
-					double ret = calc.evaluate(m_text.getText());
-					m_input = "" + ret;
-				} 
-				else {
+					try {
+						double ret = Calculator.evaluate(m_text.getText());
+						m_input = "" + ret;
+					} catch (IllegalArgumentException exp) {
+						m_label.setText("Paring error.");
+
+					}
+				} else {
 					m_input += m_str;
 				}
 				m_text.setText(m_input);

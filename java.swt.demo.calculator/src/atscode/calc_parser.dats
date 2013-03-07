@@ -51,7 +51,7 @@ extern fun p_TOKrpar (ts: tstream): void
 
 (* ****** ****** *)
 
-exception IllegalTokenExn of (token)
+
 
 (* ****** ****** *)
 

@@ -5,7 +5,9 @@
 
 (* ****** ****** *)
 
-fun calc (inp: string): double = "atscalc"
+fun calc_exn (inp: string): double = "ats_calc_exn"
+
+fun calc (inp: string, ret: &double): int = "ats_calc"
 
 abstype aexp_type // for arithmetic expressions
 typedef aexp = aexp_type
@@ -38,6 +40,9 @@ datatype token =
 // end of [token]
 
 typedef tokenlst = list0 (token)
+
+exception IllegalTokenExn of (token)
+exception UnknownCharExn of (char)
 
 (* ****** ****** *)
 

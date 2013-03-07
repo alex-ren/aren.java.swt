@@ -3,16 +3,39 @@
 ** Instructor: Hongwei Xi
 *)
 
+#define ATS_DYNLOADFLAG 0
+
+#define ATS_DYNLOADFUN_NAME "ats_calc_init"
+
+
 (* ****** ****** *)
 
 staload "calc.sats"
 
+staload UN = "prelude/SATS/unsafe.sats"
+staload _ = "prelude/DATS/unsafe.dats"
+
+
 (* ****** ****** *)
 
 implement
-calc (inp) = let
+calc_exn (inp) = let
   val aexp = string_parse (inp) in aexp_eval (aexp)
 end // end of [calc]
+
+implement
+calc (inp, ret) = 
+try
+  let
+    val aexp = string_parse (inp)
+    val ans = aexp_eval (aexp)
+    val () = $UN.ptrset<double> (&ret, ans)
+  in 
+    0
+  end
+with ~IllegalTokenExn (token) => ~2
+| ~UnknownCharExn (char) => ~1
+// end of [calc]
 
 (* ****** ****** *)
 
@@ -23,7 +46,7 @@ dynload "calc_tstream.dats"
 dynload "calc_parser.dats"
 
 (* ****** ****** *)
-
+(*
 implement
 main (argc, argv) = {
 //
@@ -36,7 +59,8 @@ val ae_val = aexp_eval (string_parse (argv.[1]))
 val () = println! ("The answer is: ", ae_val)
 //
 } // end of [main]
-
+*)
 (* ****** ****** *)
+
 
 (* end of [calc.dats] *)

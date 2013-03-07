@@ -13,7 +13,7 @@ staload "calc.sats"
 
 (* ****** ****** *)
 
-exception UnknownCharExn of (char)
+
 
 (* ****** ****** *)
 

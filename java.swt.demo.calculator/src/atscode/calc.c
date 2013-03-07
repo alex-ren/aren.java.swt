@@ -8,18 +8,37 @@
 #include <stdio.h>
 #include "aren_java_swt_demo_Calculator.h"
 
-int atsadd(int x, int y);
+void ats_calc_init();
 
-double atscalc(const char *str);
+int ats_calc(const char *str, double *ret);
 
-JNIEXPORT jdouble JNICALL Java_aren_java_swt_demo_Calculator_evaluate(JNIEnv *env, jobject jobj, jstring input) {
+void ThrowExceptionByClassName(JNIEnv *env, const char *name, const char *message) {
+  jclass class = (*env)->FindClass(env, name); //1
+  if (class != NULL) {
+      (*env)->ThrowNew(env, class, message); //2
+  }
+  (*env)->DeleteLocalRef(env, class); //3
+}
+
+
+JNIEXPORT jdouble JNICALL Java_aren_java_swt_demo_Calculator_evaluate(JNIEnv *env, jclass jcls, jstring input) {
+
+	ats_calc_init();
 
 	const jbyte *str;
 	str = (*env)->GetStringUTFChars(env, input, NULL);
-	double ret = atscalc(str);
-	// double ret = atsadd(3, 4);
+	double v = 0;
+	int ret = ats_calc(str, &v);
 
 	(*env)->ReleaseStringUTFChars(env, input, str);
-	return ret;
+	if (ret != 0)
+	{
+		ThrowExceptionByClassName(env,"java/lang/IllegalArgumentException","Parsing Error.");
+		return 1.7;
+	}
+	else
+	{
+		return v;
+	}
 }
 
