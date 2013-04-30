@@ -16,15 +16,17 @@ all: gui atslib
 
 gui: $(javabindir)/aren/java/swt/demo/CalculatorGui.class
 
-$(javabindir)/aren/java/swt/demo/CalculatorGui.class: $(javasrc)
+$(javabindir)/aren/java/swt/demo/CalculatorGui.class: $(javasrc) | $(javabindir)
 	javac -classpath "src":"../org.eclipse.swt/swt.jar" $(javadir)/CalculatorGui.java -d ./bin
 
 $(jniheader): $(javabindir)/aren/java/swt/demo/Calculator.class
 	javah -force -classpath $(javabindir) -d $(atsdir) $(jniclass) 
 
-$(javabindir)/aren/java/swt/demo/$(jniclassfile): $(javasrc)
+$(javabindir)/aren/java/swt/demo/$(jniclassfile): $(javasrc) | $(javabindir)
 	javac -classpath "src" $(javadir)/Calculator.java -d ./bin
 
+$(javabindir):
+	mkdir -p $@
 
 clean:
 	make -C ./src/atscode clean
